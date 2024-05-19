@@ -7,9 +7,9 @@ namespace MessagesTest;
 public class TestParserBase
 {
     [Fact]
-    public void ReadText_CanReadMessageWithSingleSegment()
+    public void ReadText_CanReadMessageHeader()
     {
-        var reader = new StringReader("MSH|^~\\&|1|2|3|4|5|6|7|8|9|10\n");
+        var reader = new StringReader("H|^|1|2|3|4|5|6|7|8|9|10\n");
         var parser = new Mock<ParserBase<RawMessage, RawSegment>> {CallBase = true};
 
         var message = parser.Object.ReadText(reader);
@@ -17,12 +17,11 @@ public class TestParserBase
         message.Should().NotBeNull();
         message.Segments.ToArray().Length.Should().Be(1);
         var segment = message.Segments.First();
-        segment.Fields.Count.Should().Be(12);
-        segment.Label.Should().Be("MSH");
-        segment.Fields[0].Value.Should().Be("MSH");
-        segment.Fields[1].Value.Should().Be("^~\\&");
-        segment.Fields[2].Value.Should().Be("1");
-        segment.Fields[11].Value.Should().Be("10");
+        segment.Fields.Count.Should().Be(11);
+        segment.Label.Should().Be("H");
+        segment.Fields[0].Text.Should().Be("^");
+        segment.Fields[1].Text.Should().Be("1");
+        segment.Fields[10].Text.Should().Be("10");
     }
 
     [Fact]
@@ -30,9 +29,9 @@ public class TestParserBase
     {
         var reader = new StringReader(
             """
-            MSH|^~\&|1|2|3|4|5|6|7|8|9|10
-            PID|a^b|c^d|e^f
-            PID|G&H^I&J|K&L^M&N
+            H|^|1|2|3|4|5|6|7|8|9|10
+            P|a^b|c^d|e^f
+            P|G&H^I&J|K&L^M&N
             """);
         var parser = new Mock<ParserBase<RawMessage, RawSegment>> {CallBase = true};
 
@@ -41,24 +40,57 @@ public class TestParserBase
         message.Segments.ToArray().Length.Should().Be(3);
         var segments = message.Segments.ToArray();
 
+        segments[0].Label.Should().Be("H");
+        segments[0].Fields.Count.Should().Be(11);
+        segments[0].Fields[0].Text.Should().Be("^");
+        segments[0].Fields[1].Text.Should().Be("1");
+        segments[0].Fields[10].Text.Should().Be("10");
+
+        segments[1].Label.Should().Be("P");
+        segments[1].Fields.Count.Should().Be(3);
+        segments[1].Fields[0].Text.Should().Be("a^b");
+        segments[1].Fields[1].Text.Should().Be("c^d");
+        segments[1].Fields[2].Text.Should().Be("e^f");
+
+        segments[2].Label.Should().Be("P");
+        segments[2].Fields.Count.Should().Be(2);
+        segments[2].Fields[0].Text.Should().Be("G&H^I&J");
+        segments[2].Fields[1].Text.Should().Be("K&L^M&N");
+    }
+
+    [Theory]
+    [InlineData("^~\\&")]
+    [InlineData("^~\\&#")]
+    public void ReadText_CanReadHl7StyleMessage(string specialChars)
+    {
+        var reader = new StringReader(
+            $"""
+            MSH|{specialChars}|1|2|3|4|5|6|7|8|9|10
+            PID|a^b|c^d|e^f
+            PID|G&H^I&J|K&L^M&N
+            """);
+        var parser = new Mock<ParserBase<Hl7TestMessage, RawSegment>> {CallBase = true};
+
+        var message = parser.Object.ReadText(reader);
+
+        message.Segments.ToArray().Length.Should().Be(3);
+        var segments = message.Segments.ToArray();
+
         segments[0].Label.Should().Be("MSH");
-        segments[0].Fields.Count.Should().Be(12);
-        segments[0].Fields[0].Value.Should().Be("MSH");
-        segments[0].Fields[1].Value.Should().Be("^~\\&");
-        segments[0].Fields[2].Value.Should().Be("1");
-        segments[0].Fields[11].Value.Should().Be("10");
+        segments[0].Fields.Count.Should().Be(11);
+        segments[0].Fields[0].Text.Should().Be(specialChars);
+        segments[0].Fields[1].Text.Should().Be("1");
+        segments[0].Fields[10].Text.Should().Be("10");
 
         segments[1].Label.Should().Be("PID");
-        segments[1].Fields.Count.Should().Be(4);
-        segments[1].Fields[0].Value.Should().Be("PID");
-        segments[1].Fields[1].Value.Should().Be("a^b");
-        segments[1].Fields[2].Value.Should().Be("c^d");
-        segments[1].Fields[3].Value.Should().Be("e^f");
+        segments[1].Fields.Count.Should().Be(3);
+        segments[1].Fields[0].Text.Should().Be("a^b");
+        segments[1].Fields[1].Text.Should().Be("c^d");
+        segments[1].Fields[2].Text.Should().Be("e^f");
 
         segments[2].Label.Should().Be("PID");
-        segments[2].Fields.Count.Should().Be(3);
-        segments[2].Fields[0].Value.Should().Be("PID");
-        segments[2].Fields[1].Value.Should().Be("G&H^I&J");
-        segments[2].Fields[2].Value.Should().Be("K&L^M&N");
+        segments[2].Fields.Count.Should().Be(2);
+        segments[2].Fields[0].Text.Should().Be("G&H^I&J");
+        segments[2].Fields[1].Text.Should().Be("K&L^M&N");
     }
 }

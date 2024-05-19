@@ -6,13 +6,19 @@ namespace MessageParser;
 public class RawMessage : Collection<RawSegment>
 {
     /** The index of the first special character in the first line of the message. */
-    public virtual int SpecialCharsStartIndex => 3;
+    public virtual int SpecialCharsStartIndex => 1;
 
-    /** The number of special characters we expect to find in the first line of the message. */
-    public virtual int SpecialCharsLength => 2;
+    /** The least number of special characters we expect to find in the first line of the message. */
+    public virtual int MinSpecialCharsLength => 2;
+
+    /** The highest number of special characters we expect to find in the first line of the message. */
+    public virtual int MaxSpecialCharsLength => 3;
+
+    public virtual bool AreSpecialCharsValid(string specialChars) =>
+        specialChars.Length >= MinSpecialCharsLength && specialChars.Length <= MaxSpecialCharsLength;
 
     /** The minimum length of the first line of the message. */
-    public virtual int MinStartLineLength => SpecialCharsStartIndex + SpecialCharsLength;
+    public virtual int MinStartLineLength => SpecialCharsStartIndex + MinSpecialCharsLength;
 
 
     private string _specialChars = string.Empty;
@@ -20,7 +26,7 @@ public class RawMessage : Collection<RawSegment>
     /** A string containing all special characters for the message format. Set by the parser. */
     public string SpecialChars
     {
-        get => _specialChars.Length == SpecialCharsLength
+        get => _specialChars.Length > 0
             ? _specialChars
             : throw new InvalidOperationException("SpecialChars not set.");
         set
@@ -30,13 +36,15 @@ public class RawMessage : Collection<RawSegment>
                 throw new InvalidOperationException("SpecialChars already set.");
             }
 
-            if (value.Length == SpecialCharsLength)
+            if (AreSpecialCharsValid(value))
             {
                 _specialChars = value;
             }
             else
             {
-                throw new ArgumentException($"SpecialChars must be exactly {SpecialCharsLength} characters long.",
+                throw new ArgumentException(
+                    $"SpecialChars must be between {MinSpecialCharsLength} and " +
+                    $"{MaxSpecialCharsLength} characters long.",
                     nameof(value));
             }
         }
@@ -45,8 +53,36 @@ public class RawMessage : Collection<RawSegment>
     public virtual char FieldSeparator =>
         SpecialChars[0];
 
+    protected virtual int RepeatingSeparatorIndex => 1;
+    protected virtual int SubfieldSeparatorIndex => 2;
+    protected virtual int EscapeSeparatorIndex => 3;
+    protected virtual int NestedSubfieldSeparatorIndex => 4;
+    protected virtual int TruncationCharacterIndex => 5;
+
+    public virtual char RepeatingSeparator =>
+        SpecialChars.Length >= RepeatingSeparatorIndex
+            ? SpecialChars[RepeatingSeparatorIndex]
+            : throw new InvalidOperationException("Message format does not support repeating fields.");
+
     public virtual char SubfieldSeparator =>
-        SpecialChars[1];
+        SpecialChars.Length >= SubfieldSeparatorIndex
+            ? SpecialChars[SubfieldSeparatorIndex]
+            : throw new InvalidOperationException("Message format does not support subfields.");
+
+    public virtual char EscapeSeparator =>
+        SpecialChars.Length >= EscapeSeparatorIndex
+            ? SpecialChars[EscapeSeparatorIndex]
+            : throw new InvalidOperationException("Message format does not support escape characters.");
+
+    public virtual char NestedSubfieldSeparator =>
+        SpecialChars.Length >= NestedSubfieldSeparatorIndex
+            ? SpecialChars[NestedSubfieldSeparatorIndex]
+            : throw new InvalidOperationException("Message format does not support nested subfields.");
+
+    public virtual char TruncationCharacter =>
+        SpecialChars.Length >= TruncationCharacterIndex
+            ? SpecialChars[TruncationCharacterIndex]
+            : throw new InvalidOperationException("Message format does not support truncation characters.");
 
     public IEnumerable<RawSegment> Segments => Items;
 
@@ -79,7 +115,6 @@ public class RawMessage : Collection<RawSegment>
     }
 }
 
-
 // I would prefer to pass the message to the constructor of the segment, but this is difficult to do if we want
 // to have a parser that is generic in the type of message and segment it understands, since we can only constrain
 // the segment to have a parameterless constructor.
@@ -93,6 +128,7 @@ public class RawMessage : Collection<RawSegment>
 public class RawSegment
 {
     private RawMessage? _message;
+    private string? _label;
 
     public RawMessage? Message
     {
@@ -114,14 +150,19 @@ public class RawSegment
 
     public ImmutableList<RawField> Fields { get; private set; } = ImmutableList<RawField>.Empty;
 
-    public virtual void ParseFields(string line)
+    public virtual void ParseLine(string line)
     {
-        if (Message == null)
-        {
-            throw new InvalidOperationException("Can only parse fields for segments belonging to a message.");
-        }
+        if (_label != null)
+            throw new InvalidOperationException("Segment already contains parse result.");
 
-        string[] fields = line.Split(Message.FieldSeparator);
+        if (Message == null)
+            throw new InvalidOperationException("Can only parse fields for segments belonging to a message.");
+
+
+        string[] allFields = line.Split(Message.FieldSeparator);
+        _label = allFields[0];
+        var fields = allFields.Skip(1);
+
         var builder = ImmutableList.CreateBuilder<RawField>();
         foreach (string field in fields)
         {
@@ -131,15 +172,80 @@ public class RawSegment
         Fields = builder.ToImmutable();
     }
 
-    public string Label => Fields[0].Value ?? throw new InvalidOperationException("Segment has no label.");
+    public string Label => _label ?? throw new InvalidOperationException("Segment has no label.");
     public RawField this[int index] => Fields[index];
+
+    public virtual string Value(int fieldIndex, int subfieldIndex = 0, int nestedSubfieldIndex = 0)
+    {
+        return Fields[fieldIndex].Value(subfieldIndex, nestedSubfieldIndex);
+    }
+
+    public virtual string[] Values(int fieldIndex, int subfieldIndex = 0, int nestedSubfieldIndex = 0)
+    {
+        return Fields[fieldIndex].Values(subfieldIndex, nestedSubfieldIndex);
+    }
 }
 
-public class RawField(string? value, RawMessage? message = null)
+public class RawField(string? text, RawMessage? message = null)
 {
     public RawMessage? Message { get; internal set; } = message;
-    public string? Value { get; } = value;
+    public string? Text { get; } = text;
 
-    public bool HasValue => Value != null;
-    public bool HasSubfields => Message != null && Value?.Contains(Message.SubfieldSeparator) == true;
+    // The following methods are not virtual, since the null check is essential for value extraction to be safe.
+    // Override Text... to introduce additional checks.
+    public bool HasValue => Text != null && TextIsValidValue;
+    protected virtual bool TextIsValidValue => true;
+
+    public bool HasSubfields => Message != null && TextHasSubfields;
+    protected virtual bool TextHasSubfields => Text?.Contains(Message!.SubfieldSeparator) == true;
+
+    public bool HasNestedSubfields =>
+        // Not sure whether we should check TextHasSubfields as well.
+        Message != null && TextHasNestedSubfields;
+
+    protected virtual bool TextHasNestedSubfields => Text?.Contains(Message!.NestedSubfieldSeparator) == true;
+
+    public bool IsRepeating => Message != null && TextIsRepeating;
+    protected virtual bool TextIsRepeating => Text?.Contains(Message!.RepeatingSeparator) == true;
+
+    public virtual string Value(int subfieldIndex = 0, int nestedSubfieldIndex = 0)
+    {
+        if (!HasValue) throw new InvalidOperationException("Field has no value.");
+        if (IsRepeating)
+            throw new InvalidOperationException("Cannot extract single value from repeating field.");
+        return ExtractValue(Text!, subfieldIndex, nestedSubfieldIndex);
+    }
+
+    public virtual string[] Values(int subfieldIndex = 0, int nestedSubfieldIndex = 0)
+    {
+        if (!HasValue) throw new InvalidOperationException("Field has no value.");
+        return Text!
+            .Split(Message!.RepeatingSeparator)
+            .Select(t => ExtractValue(t, subfieldIndex, nestedSubfieldIndex))
+            .ToArray();
+    }
+
+    private string ExtractValue(string text, int subfieldIndex, int nestedSubfieldIndex)
+    {
+        if (HasSubfields)
+        {
+            string[] subfields = text.Split(Message!.SubfieldSeparator);
+            string subfield = subfields.ElementAtOrDefault(subfieldIndex) ??
+                              throw new ArgumentException("Subfield index out of range.", nameof(subfieldIndex));
+            if (HasNestedSubfields)
+            {
+                string[] nestedSubfields = subfield.Split(Message!.NestedSubfieldSeparator);
+                return nestedSubfields.ElementAtOrDefault(nestedSubfieldIndex) ??
+                       throw new ArgumentException("Nested subfield index out of range.", nameof(nestedSubfieldIndex));
+            }
+            else
+            {
+                return subfield;
+            }
+        }
+        else
+        {
+            return text;
+        }
+    }
 }
