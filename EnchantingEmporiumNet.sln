@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messages", "Messages\Messages.csproj", "{5D5FBEC4-3958-430F-A068-35AFF2989AD4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessagesTest", "MessagesTest\MessagesTest.csproj", "{EF876748-2E3C-4093-A66D-6FBA5AC20AD5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5D5FBEC4-3958-430F-A068-35AFF2989AD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D5FBEC4-3958-430F-A068-35AFF2989AD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D5FBEC4-3958-430F-A068-35AFF2989AD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D5FBEC4-3958-430F-A068-35AFF2989AD4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF876748-2E3C-4093-A66D-6FBA5AC20AD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF876748-2E3C-4093-A66D-6FBA5AC20AD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF876748-2E3C-4093-A66D-6FBA5AC20AD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF876748-2E3C-4093-A66D-6FBA5AC20AD5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
