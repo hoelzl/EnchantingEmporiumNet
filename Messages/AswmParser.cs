@@ -1,25 +1,59 @@
-﻿using Orders;
+﻿using System.Globalization;
+using CsvHelper;
+using CsvHelper.Configuration;
+using CsvHelper.Configuration.Attributes;
+using Orders;
 
 namespace MessageParser;
 
+// ReSharper disable once ClassNeverInstantiated.Global
+public class FieldLabelConfig
+{
+    public string Label { get; set; }
+    public string Action { get; set; }
+}
+
+public class FieldActionConfig
+{
+    [Index(0)] public string Label { get; set; }
+    [Index(1)] public int FieldIndex { get; set; }
+    [Index(2)] public int SubfieldIndex { get; set; }
+    [Index(3)] public string Action { get; set; }
+
+    public void Deconstruct(out string label, out int index, out string action)
+    {
+        label = Label;
+        index = FieldIndex;
+        action = Action;
+    }
+
+    public void Deconstruct(out string label, out int index, out int subfieldIndex, out string action)
+    {
+        label = Label;
+        index = FieldIndex;
+        subfieldIndex = SubfieldIndex;
+        action = Action;
+    }
+}
+
 public class AswmParser : ParserBase<RawMessage, RawSegment>
 {
-    private readonly Dictionary<string, string> _labelConfig = new()
+    public AswmParser(TextReader labelConfigReader, TextReader fieldConfigReader)
     {
-        {"H", "Header"},
-        {"O", "Order"},
-        {"L", "OrderLine"}
-    };
+        using (var csv = new CsvReader(labelConfigReader, CultureInfo.InvariantCulture))
+        {
+            _labelConfig = csv.GetRecords<FieldLabelConfig>().ToDictionary(x => x.Label, x => x.Action);
+        }
 
-    private readonly List<(string, int, string)> _fieldConfig =
-    [
-        ("H", 1, "Sender"),
-        ("H", 2, "Receiver"),
-        ("O", 0, "Priority"),
-        ("O", 1, "Customer"),
-        ("L", 0, "Product"),
-        ("L", 1, "Quantity"),
-    ];
+        var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture) {HasHeaderRecord = false};
+        using (var csv = new CsvReader(fieldConfigReader, csvConfig))
+        {
+            _fieldConfig = csv.GetRecords<FieldActionConfig>().ToList();
+        }
+    }
+
+    private readonly Dictionary<string, string> _labelConfig;
+    private readonly List<FieldActionConfig> _fieldConfig;
 
     public OrderBundle ParseMessage(string message)
     {

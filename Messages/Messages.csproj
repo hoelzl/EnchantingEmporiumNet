@@ -11,4 +11,8 @@
     <ItemGroup>
       <ProjectReference Include="..\Orders\Orders.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="CsvHelper" Version="32.0.3" />
+    </ItemGroup>
 </Project>

@@ -6,20 +6,40 @@ namespace MessagesTest;
 
 public class AswmParserTest
 {
+    private readonly string _fieldConfigCsv = """
+                                              Label,Action
+                                              H,Header
+                                              O,Order
+                                              L,OrderLine
+                                              """;
+
+
+    private readonly string _labelConfigCsv = """
+                                              H,1,0,Sender
+                                              H,2,0,Receiver
+                                              O,0,0,Priority
+                                              O,1,0,Customer
+                                              L,0,0,Product
+                                              L,1,0,Quantity
+                                              """;
+
     [Fact]
     public void ParseMessage_CanParseAswmMessage()
     {
+        var fieldConfigReader = new StringReader(_fieldConfigCsv);
+        var labelConfigReader = new StringReader(_labelConfigCsv);
+
         var wizard = new Wizard();
-        var parser = new AswmParser();
+        var parser = new AswmParser(fieldConfigReader, labelConfigReader);
         var message = parser.ParseMessage($"""
-            H|\^|Magic and More|Enchanting Emporium|2024-05-21|12:34:56
-            O|Medium|{wizard.Id}
-            L|Healing Potion|4
-            L|Mana Potion|2
-            O|High|{wizard.Id}
-            L|Scroll of Fireball|1
-            L|Scroll of Teleportation|1
-            """);
+                                           H|\^|Magic and More|Enchanting Emporium|2024-05-21|12:34:56
+                                           O|Medium|{wizard.Id}
+                                           L|Healing Potion|4
+                                           L|Mana Potion|2
+                                           O|High|{wizard.Id}
+                                           L|Scroll of Fireball|1
+                                           L|Scroll of Teleportation|1
+                                           """);
 
         message.Should().NotBeNull();
         message.Sender.Should().Be("Magic and More");
