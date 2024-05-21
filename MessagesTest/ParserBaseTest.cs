@@ -4,7 +4,7 @@ using FluentAssertions;
 
 namespace MessagesTest;
 
-public class TestParserBase
+public class ParserBaseTest
 {
     [Fact]
     public void ReadText_CanReadMessageHeader()

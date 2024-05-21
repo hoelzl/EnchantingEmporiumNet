@@ -269,11 +269,11 @@ public class TestRawSegment
     }
 }
 
-public class TestRawMessage
+public class RawMessageTest
 {
     private readonly RawMessage _message;
 
-    public TestRawMessage()
+    public RawMessageTest()
     {
         _message = new RawMessage
         {
