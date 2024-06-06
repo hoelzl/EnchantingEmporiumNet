@@ -1,6 +1,6 @@
 ﻿using Orders;
 
-namespace MessageParser;
+namespace Messages;
 
 public class OrderBundleBuilder
 {

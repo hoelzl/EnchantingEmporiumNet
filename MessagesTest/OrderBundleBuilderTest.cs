@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using MessageParser;
+using Messages;
 using Orders;
 
 namespace MessagesTest;

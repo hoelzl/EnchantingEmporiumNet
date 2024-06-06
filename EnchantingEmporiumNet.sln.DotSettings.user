@@ -1,60 +1,24 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=09bca4d2_002De2f6_002D4b94_002D9350_002D2182e687d42b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="ParseMessage_CanParseAswmMessage" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::EF876748-2E3C-4093-A66D-6FBA5AC20AD5::net8.0::MessagesTest.AswmParserTest.ParseMessage_CanParseAswmMessage&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=0cbceb8c_002D423c_002D4e8a_002Dafb0_002D7a81d891980c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Enchanting Emporium Test" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9cbc31ab_002D773e_002D4a07_002D96e2_002D579d614aa639/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from Solution" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Solution /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=1df23802_002D2314_002D4c2f_002Da311_002D2a667f5299cc/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from Solution #12" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Solution /&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=1e74e0fb_002Df3bc_002D4285_002D891a_002Ddb85133ecf24/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from Solution #8" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Solution /&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=35e6851f_002D4712_002D4d40_002D8c45_002Dd501a649c823/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from Solution #3" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Solution /&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5142a809_002D7871_002D417e_002D88c4_002De63bb501cd5d/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from Solution" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Solution /&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=7d91eedd_002D082d_002D419c_002Da4ce_002D2208574b9529/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from Solution #14" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Solution /&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=81145cbb_002D4fff_002D4ac2_002Da15d_002D1812e3ddbebd/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from Solution #9" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Solution /&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=868bf6a9_002D3aa4_002D477d_002D9a53_002D5e14dab54a07/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from Solution #15" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Solution /&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8d9cd212_002Dc16c_002D481c_002Daa6e_002Dfba241ea2c79/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from Solution #11" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Solution /&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=946e240d_002Da502_002D441b_002Da706_002D3a8fca52106e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from Solution #5" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Solution /&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a37ddc37_002D2b92_002D4a6a_002D87b6_002D8b78dc9ff223/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from Solution #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Solution /&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b5370136_002D0793_002D4d5e_002D96c6_002Dc1505a2bbbe0/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from Solution #4" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Solution /&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c73916c9_002D1ac0_002D4024_002Db19b_002D45c6222b58cb/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from Solution #13" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Solution /&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=cb2f10b6_002D9c51_002D4b3f_002Dab2d_002D6f9f45103fd5/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from Solution #7" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Solution /&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=db1ab946_002Da20a_002D40fa_002Db000_002D66ea0e72bda5/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from Solution #6" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Solution /&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=e2cd32ee_002D3c78_002D41f3_002Dbae4_002Db9da3301ef00/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from Solution #10" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Solution /&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=f3fcf23d_002Dbe4d_002D4cca_002Dbdfe_002D9a536772e97d/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from Solution #17" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Solution /&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=f40f6a4c_002D3a40_002D4031_002D8fa2_002Dcfdd47116df5/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from Solution #16" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Solution /&gt;&#xD;
-&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	</wpf:ResourceDictionary>

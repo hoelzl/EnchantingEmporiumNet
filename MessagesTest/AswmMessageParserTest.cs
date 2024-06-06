@@ -1,10 +1,10 @@
 ﻿using FluentAssertions;
-using MessageParser;
+using Messages;
 using Orders;
 
 namespace MessagesTest;
 
-public class AswmParserTest
+public class AswmMessageParserTest
 {
     private readonly string _fieldConfigCsv = """
                                               Label,Action
@@ -30,7 +30,7 @@ public class AswmParserTest
         var labelConfigReader = new StringReader(_labelConfigCsv);
 
         var wizard = new Wizard();
-        var parser = new AswmParser(fieldConfigReader, labelConfigReader);
+        var parser = new AswmMessageParser(new MessageParserSpec(), fieldConfigReader, labelConfigReader);
         var message = parser.ParseMessage($"""
                                            H|\^|Magic and More|Enchanting Emporium|2024-05-21|12:34:56
                                            O|Medium|{wizard.Id}

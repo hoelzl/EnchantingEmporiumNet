@@ -1,0 +1,52 @@
+﻿<message>
+    <record>
+        <label>OCX</label>
+        <component> <!-- |1| -->
+            <repetition>
+                <subcomponent>
+                    <value>1</value>
+                </subcomponent>
+            </repetition>
+        </component>
+        <component> <!-- |1~2| -->
+            <repetition>
+                <subcomponent>
+                    <value>1</value>
+                </subcomponent>
+            </repetition>
+            <repetition>
+                <subcomponent>
+                    <value>2</value>
+                </subcomponent>
+            </repetition>
+        </component>
+        <component> <!-- |1^2| -->
+            <repetition>
+                <subcomponent>
+                    <value>1</value>
+                </subcomponent>
+                <subcomponent>
+                    <value>2</value>
+                </subcomponent>
+            </repetition>
+        </component>
+        <component> <!-- |1^2~3^4| -->
+            <repetition>
+                <subcomponent>
+                    <value>1</value>
+                </subcomponent>
+                <subcomponent>
+                    <value>2</value>
+                </subcomponent>
+            </repetition>
+            <repetition>
+                <subcomponent>
+                    <value>3</value>
+                </subcomponent>
+                <subcomponent>
+                    <value>4</value>
+                </subcomponent>
+            </repetition>
+        </component>
+    </record>
+</message>

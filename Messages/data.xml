@@ -1,0 +1,87 @@
+﻿<message>
+    <record>
+        <label>OCX</label>
+        <component> <!-- |1| -->
+            <value>1</value>
+        </component>
+        <component> <!-- |1~2| -->
+            <repetition>
+                <value>1</value>
+            </repetition>
+            <repetition>
+                <value>2</value>
+            </repetition>
+        </component>
+        <component> <!-- |1^2| -->
+            <subcomponent>
+                <value>1</value>
+            </subcomponent>
+            <subcomponent>
+                <value>2</value>
+            </subcomponent>
+        </component>
+        <component> <!-- |1^2~3^4| -->
+            <repetition>
+                <subcomponent>
+                    <value>1</value>
+                </subcomponent>
+                <subcomponent>
+                    <value>2</value>
+                </subcomponent>
+            </repetition>
+            <repetition>
+                <subcomponent>
+                    <value>3</value>
+                </subcomponent>
+                <subcomponent>
+                    <value>4</value>
+                </subcomponent>
+            </repetition>
+        </component>
+    </record>
+</message>
+
+
+<!--
+Component::Serialize() -> string
+
+Component (Abstract)
+  SingleValueComponent hat Value
+  SingleSubComponentComponent hat SubComponent
+  RepeatedValueComponent hat List<Value>
+  RepeatedSubComponentComponent hat List<SubComponent>
+SubComponent
+  RepeatedSubComponent hat List<Value>
+Value
+
+SVC::Value() -> string
+SSCC::Value(int index) -> string
+RVC::Value() -> List<string>
+RSCC::Value(int index) -> List<string>
+
+SVC::Value(int index = 0) -> string
+SSCC::Value(int index = 0) -> string
+RVC::Value(int index = 0) -> Error
+RSCC::Value(int index = 0) -> Error
+
+SVC::Values(int index = 0) -> List<string> ?
+SSCC::Values(int index = 0) -> List<string> ?
+RVC::Values(int index = 0) -> List<string>
+RSCC::Values(int index = 0) -> List<string>
+
+Component hat List<Repetition> (und Text)
+Repetition hat List<SubComponent>
+SubComponent hat Value
+
+Component::Values(int index = 0) -> List<string>
+Component::Value(int index = 0) -> string
+{
+    if (Values.Length != 1) throw IllegalOperationException
+    Values[0]
+}
+
+Component has String
+
+Component::Values(int index = 0) -> List<string> parst Values in String[]
+Component::Value(int index = 0) -> string parst Values in String
+-->

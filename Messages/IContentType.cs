@@ -1,4 +1,4 @@
-﻿namespace MessageParser;
+﻿namespace Messages;
 
 public interface IContentType
 {

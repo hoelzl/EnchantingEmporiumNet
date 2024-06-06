@@ -4,21 +4,21 @@ using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
 using Orders;
 
-namespace MessageParser;
+namespace Messages;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 public class FieldLabelConfig
 {
-    public string Label { get; set; }
-    public string Action { get; set; }
+    public string Label { get; set; } = "";
+    public string Action { get; set; } = "";
 }
 
 public class FieldActionConfig
 {
-    [Index(0)] public string Label { get; set; }
-    [Index(1)] public int FieldIndex { get; set; }
-    [Index(2)] public int SubfieldIndex { get; set; }
-    [Index(3)] public string Action { get; set; }
+    [Index(0)] public string Label { get; set; } = "";
+    [Index(1)] public int FieldIndex { get; set; } = 0;
+    [Index(2)] public int SubfieldIndex { get; set; } = 0;
+    [Index(3)] public string Action { get; set; } = "";
 
     public void Deconstruct(out string label, out int index, out string action)
     {
@@ -36,9 +36,10 @@ public class FieldActionConfig
     }
 }
 
-public class AswmParser : ParserBase<RawMessage, RawSegment>
+public class AswmMessageParser : MessageParser
 {
-    public AswmParser(TextReader labelConfigReader, TextReader fieldConfigReader)
+    public AswmMessageParser(MessageParserSpec spec, TextReader labelConfigReader, TextReader fieldConfigReader) :
+        base(spec)
     {
         using (var csv = new CsvReader(labelConfigReader, CultureInfo.InvariantCulture))
         {
@@ -65,17 +66,17 @@ public class AswmParser : ParserBase<RawMessage, RawSegment>
     {
         var message = ReadText(reader);
         var builder = new OrderBundleBuilder();
-        foreach (var segment in message.Segments)
+        foreach (var record in message.Records)
         {
-            string segmentName = _labelConfig[segment.Label];
+            string segmentName = _labelConfig[record.Label];
             builder.NewSegment(segmentName);
             foreach (var (label, index, action) in _fieldConfig)
             {
-                if (segment.Label == label)
+                if (record.Label == label)
                 {
-                    string? value = segment.Fields[index].Text;
+                    string? value = record.Value(index);
                     if (value is null)
-                        throw new InvalidOperationException($"Field {index} in segment {segment.Label} has no value");
+                        throw new InvalidOperationException($"Field {index} in segment {record.Label} has no value");
                     builder.SetField(action, value);
                 }
             }
